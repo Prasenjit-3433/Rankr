@@ -96,7 +96,7 @@ export class PollsRepository {
     );
 
     const key = `polls:${pollID}`;
-    const participantPath = `.participant.${userID}`;
+    const participantPath = `.participants.${userID}`;
 
     try {
       await this.redisClient.send_command(
