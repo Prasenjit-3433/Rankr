@@ -1,5 +1,3 @@
-import { Request } from 'express';
-
 // Repository types
 export type CreatePollData = {
   pollID: string;
@@ -13,12 +11,3 @@ export type AddParticipantData = {
   userID: string;
   name: string;
 };
-
-// guard types
-type AuthPayload = {
-  userID: string;
-  pollID: string;
-  name: string;
-};
-
-export type RequestWithAuth = Request & AuthPayload;

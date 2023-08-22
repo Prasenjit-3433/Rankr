@@ -3,7 +3,7 @@ import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
 import { PollsService } from './polls.service';
 import { PollsGuard } from './polls.guard';
-import { RequestWithAuth } from './types';
+import { RequestWithAuth } from '../global-types/http.types';
 
 @Controller('polls')
 export class PollsController {

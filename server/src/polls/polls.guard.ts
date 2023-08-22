@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RequestWithAuth } from './types';
+import { RequestWithAuth } from '../global-types/http.types';
 
 @Injectable()
 export class PollsGuard implements CanActivate {
