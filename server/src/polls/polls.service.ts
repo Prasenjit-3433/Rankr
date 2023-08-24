@@ -1,10 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CreatePollDto } from './dto/create-poll.dto';
-import { JoinPollDto } from './dto/join-poll.dto';
+import {
+  CreatePollFields,
+  JoinPollFields,
+  RejoinPollFields,
+  AddParticipantFields,
+  RemoveParticipantFields,
+} from './types/polls-service.types';
 import { createPollID, createUserID } from 'src/utils/ids';
-import { RejoinPollDto } from './dto/rejoin-poll.dto';
 import { PollsRepository } from './polls.repository';
+import { Poll } from 'shared';
 
 @Injectable()
 export class PollsService {
@@ -15,17 +20,14 @@ export class PollsService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createPoll(createPollDto: CreatePollDto) {
-    const { topic, votesPerVoter } = createPollDto;
-
+  async createPoll(fields: CreatePollFields) {
     const pollID = createPollID();
     const userID = createUserID();
 
     const createdPoll = await this.pollsRepository.createPoll({
+      ...fields,
       pollID,
       userID,
-      topic,
-      votesPerVoter,
     });
 
     this.logger.debug(
@@ -35,7 +37,7 @@ export class PollsService {
     const signedString = this.jwtService.sign(
       {
         pollID: createdPoll.id,
-        name: createPollDto.name,
+        name: fields.name,
       },
       {
         subject: userID,
@@ -48,14 +50,14 @@ export class PollsService {
     };
   }
 
-  async joinPoll(joinPollDto: JoinPollDto) {
+  async joinPoll(fields: JoinPollFields) {
     const userID = createUserID();
 
     this.logger.debug(
-      `Fetching poll with ID: ${joinPollDto.pollID} for user with ID: ${userID}`,
+      `Fetching poll with ID: ${fields.pollID} for user with ID: ${userID}`,
     );
 
-    const joinedPoll = await this.pollsRepository.getPoll(joinPollDto.pollID);
+    const joinedPoll = await this.pollsRepository.getPoll(fields.pollID);
 
     this.logger.debug(
       `Creating token string for pollID: ${joinedPoll.id} and userID: ${userID}`,
@@ -64,7 +66,7 @@ export class PollsService {
     const signedString = this.jwtService.sign(
       {
         pollID: joinedPoll.id,
-        name: joinPollDto.name,
+        name: fields.name,
       },
       {
         subject: userID,
@@ -77,14 +79,34 @@ export class PollsService {
     };
   }
 
-  async rejoinPoll(rejoinPollDto: RejoinPollDto) {
+  async rejoinPoll(fields: RejoinPollFields): Promise<Poll> {
     this.logger.debug(
-      `Rejoining poll with ID: ${rejoinPollDto.pollID} for user with ID: ${rejoinPollDto.userID} 
-      with name: ${rejoinPollDto.name}`,
+      `Rejoining poll with ID: ${fields.pollID} for user with ID: ${fields.userID} 
+      with name: ${fields.name}`,
     );
 
-    const joinedPoll = await this.pollsRepository.addParticipant(rejoinPollDto);
+    const joinedPoll = await this.pollsRepository.addParticipant(fields);
 
     return joinedPoll;
+  }
+
+  async addParticipant(addParticipant: AddParticipantFields): Promise<Poll> {
+    return this.pollsRepository.addParticipant(addParticipant);
+  }
+
+  async removeParticipant({
+    pollID,
+    userID,
+  }: RemoveParticipantFields): Promise<Poll | void> {
+    const poll = await this.pollsRepository.getPoll(pollID);
+
+    if (!poll.hasStarted) {
+      const updatedPoll = await this.pollsRepository.removeParticipant({
+        pollID,
+        userID,
+      });
+
+      return updatedPoll;
+    }
   }
 }
