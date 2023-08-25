@@ -10,7 +10,7 @@ import {
 import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
 import { PollsService } from './polls.service';
-import { PollsGuard } from './polls.guard';
+import { PollsGuard } from './guards/polls-controller.guard';
 import { RequestWithAuth } from '../global-types/http.types';
 
 @UsePipes(new ValidationPipe())
