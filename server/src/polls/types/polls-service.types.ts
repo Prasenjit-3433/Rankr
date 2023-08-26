@@ -15,13 +15,19 @@ export type RejoinPollFields = {
   name: string;
 };
 
-export interface AddParticipantFields {
+export type AddParticipantFields = {
   pollID: string;
   userID: string;
   name: string;
-}
+};
 
-export interface RemoveParticipantFields {
+export type RemoveParticipantFields = {
   pollID: string;
   userID: string;
-}
+};
+
+export type AddNominationFields = {
+  pollID: string;
+  userID: string;
+  text: string;
+};
