@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   CreatePollFields,
@@ -7,6 +7,7 @@ import {
   AddParticipantFields,
   RemoveParticipantFields,
   AddNominationFields,
+  SubmitRankingsFields,
 } from './types/polls-service.types';
 import { createPollID, createUserID, createNominationID } from '../utils/ids';
 import { PollsRepository } from './polls.repository';
@@ -132,5 +133,29 @@ export class PollsService {
 
   async removeNomination(pollID: string, nominationID: string): Promise<Poll> {
     return this.pollsRepository.removeNomination(pollID, nominationID);
+  }
+
+  async startPoll(pollID: string): Promise<Poll> {
+    return this.pollsRepository.startPoll(pollID);
+  }
+
+  async submitRankings({
+    pollID,
+    userID,
+    rankings,
+  }: SubmitRankingsFields): Promise<Poll> {
+    const poll = await this.pollsRepository.getPoll(pollID);
+
+    if (!poll.hasStarted) {
+      throw new BadRequestException(
+        `Participants cannot rank untill the poll has started`,
+      );
+    }
+
+    return this.pollsRepository.addParticipantRankings({
+      pollID,
+      userID,
+      rankings,
+    });
   }
 }

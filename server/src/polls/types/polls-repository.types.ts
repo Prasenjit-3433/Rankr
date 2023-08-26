@@ -23,3 +23,9 @@ export type AddNominationData = {
   nominationID: string;
   nomination: Nomination;
 };
+
+export type AddParticipantRankingData = {
+  pollID: string;
+  userID: string;
+  rankings: string[];
+};

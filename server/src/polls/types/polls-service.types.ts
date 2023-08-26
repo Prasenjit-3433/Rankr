@@ -31,3 +31,9 @@ export type AddNominationFields = {
   userID: string;
   text: string;
 };
+
+export type SubmitRankingsFields = {
+  pollID: string;
+  userID: string;
+  rankings: string[];
+};

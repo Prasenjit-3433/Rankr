@@ -155,4 +155,32 @@ export class PollsGateway
       this.io.to(client.pollID).emit('poll_updated', updatedPoll);
     }
   }
+
+  @UseGuards(GatewayAdminGuard)
+  @SubscribeMessage('start_vote')
+  async startPoll(@ConnectedSocket() client: SocketWithAuth) {
+    this.logger.debug(`Attempting to start voting for poll: ${client.pollID}`);
+
+    const updatedPoll = await this.pollsService.startPoll(client.pollID);
+
+    if (updatedPoll) {
+      this.io.to(client.pollID).emit('poll_updated', updatedPoll);
+    }
+  }
+
+  @SubscribeMessage('submit_rankings')
+  async submitRankings(
+    @MessageBody('rankings') rankings: string[],
+    @ConnectedSocket() client: SocketWithAuth,
+  ): Promise<void> {
+    this.logger.debug(
+      `Submitting votes for user: ${client.userID} belonging to pollID: ${client.pollID}`,
+    );
+
+    const updatedPoll = await this.pollsService.submitRankings({
+      pollID: client.pollID,
+      userID: client.userID,
+      rankings,
+    });
+  }
 }

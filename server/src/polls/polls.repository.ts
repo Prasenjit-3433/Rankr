@@ -10,6 +10,7 @@ import { IORedisKey } from '../redis/redis.module';
 import {
   AddNominationData,
   AddParticipantData,
+  AddParticipantRankingData,
   CreatePollData,
   removeParticipantData,
 } from './types/polls-repository.types';
@@ -41,6 +42,7 @@ export class PollsRepository {
       participants: {},
       adminID: userID,
       nominations: {},
+      rankings: {},
       hasStarted: false,
     };
 
@@ -206,6 +208,66 @@ export class PollsRepository {
 
       throw new InternalServerErrorException(
         `Failed to remove nominationID: ${nominationID} from poll: ${pollID}`,
+      );
+    }
+  }
+
+  async startPoll(pollID: string): Promise<Poll> {
+    this.logger.log(`Setting hasStarted to true for poll: ${pollID}`);
+
+    const key = `polls:${pollID}`;
+
+    try {
+      await this.redisClient.send_command(
+        'JSON.SET',
+        key,
+        '.hasStarted',
+        JSON.stringify(true),
+      );
+
+      return this.getPoll(pollID);
+    } catch (e) {
+      this.logger.error(
+        `Failed to set hasStarted to true for poll: ${pollID}`,
+        e,
+      );
+
+      throw new InternalServerErrorException(
+        `There was an error starting the poll`,
+      );
+    }
+  }
+
+  async addParticipantRankings({
+    pollID,
+    userID,
+    rankings,
+  }: AddParticipantRankingData): Promise<Poll> {
+    this.logger.debug(
+      `Attempting to add rankings for userID: ${userID} to pollID: ${pollID}`,
+      rankings,
+    );
+
+    const key = `polls:${pollID}`;
+    const rankingsPath = `.rankings.${userID}`;
+
+    try {
+      await this.redisClient.send_command(
+        'JSON.SET',
+        key,
+        rankingsPath,
+        JSON.stringify(rankings),
+      );
+
+      return this.getPoll(pollID);
+    } catch (e) {
+      this.logger.error(
+        `Failed to add rankings for userID: ${userID} to pollID: ${pollID}`,
+        e,
+      );
+
+      throw new InternalServerErrorException(
+        'There was an error adding the rankings to poll',
       );
     }
   }
