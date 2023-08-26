@@ -12,6 +12,7 @@ import {
 import { createPollID, createUserID, createNominationID } from '../utils/ids';
 import { PollsRepository } from './polls.repository';
 import { Poll } from 'shared';
+import { getResults } from '../utils/get-results';
 
 @Injectable()
 export class PollsService {
@@ -157,5 +158,21 @@ export class PollsService {
       userID,
       rankings,
     });
+  }
+
+  async computeResults(pollID: string): Promise<Poll> {
+    const poll = await this.pollsRepository.getPoll(pollID);
+
+    const results = getResults(
+      poll.rankings,
+      poll.nominations,
+      poll.votesPerVoter,
+    );
+
+    return this.pollsRepository.addResults(pollID, results);
+  }
+
+  async cancelPoll(pollID: string): Promise<void> {
+    await this.pollsRepository.deletePoll(pollID);
   }
 }
