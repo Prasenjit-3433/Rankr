@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { actions, state } from '../state';
+import { AppPage, actions, state } from '../state';
 import { useCopyToClipboard } from 'react-use';
 import { useSnapshot } from 'valtio';
 import { colorizeText } from '../util';
@@ -87,7 +87,7 @@ const WaitingRoom: React.FC = () => {
               <button
                 className="box btn-orange my-2"
                 disabled={!currentState.canStartVote}
-                onClick={() => console.log('will add start vote next time!')}
+                onClick={() => actions.startVote()}
               >
                 Start Voting
               </button>
