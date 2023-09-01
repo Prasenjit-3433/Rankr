@@ -109,9 +109,16 @@ const actions = {
           actions,
         })
       );
-    } else {
+
+      return;
+    } 
+
+    if (!state.socket.connected) {
       state.socket.connect();
+      return;
     }
+
+    actions.stopLoading();
   },
 
   updatePoll: (poll: Poll): void => {
