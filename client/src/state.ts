@@ -12,6 +12,7 @@ export enum AppPage {
   Join = 'join',
   WaitingRoom = 'waiting-room',
   Voting = 'voting',
+  Results = 'results',
 }
 
 type Me = {
@@ -40,6 +41,8 @@ export type AppState = {
   nominationCount: number;
   participantCount: number;
   canStartVote: boolean;
+  hasVoted: boolean;
+  rankingCount: number;
 };
 
 const state = proxy<AppState>({
@@ -78,6 +81,15 @@ const state = proxy<AppState>({
 
     return this.nominationCount >= votesPerVoter;
   },
+  get hasVoted() {
+    const rankings = this.poll?.rankings ?? {};
+    const userID = this.me?.id ?? '';
+
+    return rankings[userID] !== undefined ? true : false;
+  },
+  get rankingCount() {
+    return Object.entries(this.poll?.rankings ?? {}).length;
+  },
 });
 
 const actions = {
@@ -112,7 +124,7 @@ const actions = {
       );
 
       return;
-    } 
+    }
 
     if (!state.socket.connected) {
       state.socket.connect();
@@ -124,6 +136,14 @@ const actions = {
 
   updatePoll: (poll: Poll): void => {
     state.poll = poll;
+  },
+
+  closePoll: (): void => {
+    state.socket?.emit('close_poll');
+  },
+
+  cancelPoll: (): void => {
+    state.socket?.emit('cancel_poll');
   },
 
   nominate: (text: string): void => {
@@ -159,10 +179,6 @@ const actions = {
 
   submitRankings: (rankings: string[]): void => {
     state.socket?.emit('submit_rankings', { rankings });
-  },
-
-  cancelPoll: (): void => {
-    state.socket?.emit('cancel_poll');
   },
 
   addWsError: (error: WsError): void => {
