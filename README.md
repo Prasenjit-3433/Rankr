@@ -83,14 +83,50 @@ Whether you're trying to choose a restaurant for dinner, select a movie for movi
 
 ### 🛠 Built With
 
-* <img src="diagrams/typescript-svgrepo-com.svg" alt="TypeScript" width="50" height="50"/>
-* <img src="diagrams/nestjs.svg" alt="Nest.js" width="50" height="50"/>
-* <img src="diagrams/redis.svg" alt="Redis JSON" width="50" height="50"/>
-* <img src="diagrams/websocket-svgrepo-com.svg" alt="socket.io" width="50" height="50"/>
-* <img src="diagrams/react-svgrepo-com.svg" alt="ALT_TEXT" width="50" height="50"/>
-* <img src="diagrams/valtio.svg" alt="Valtio" width="50" height="50"/>
-* <img src="diagrams/wouter.svg" alt="wouter" width="50" height="50"/>
-* <img src="diagrams/docker-svgrepo-com.svg" alt="Docker" width="50" height="50"/>
+<table>
+  <tr>
+    <td align="center">
+      <img src="diagrams/typescript-svgrepo-com.svg" alt="TypeScript" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/nestjs.svg" alt="Nest.js" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/redis.svg" alt="Redis JSON" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/websocket-svgrepo-com.svg" alt="socket.io" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/jsonwebtokens-svgrepo-com.svg" alt="JWT" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/react-svgrepo-com.svg" alt="React" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/storybook-svgrepo-com.svg" alt="StoryBook" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/valtio.svg" alt="Valtio" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/wouter.svg" alt="wouter" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/tailwindcss-svgrepo-com.svg" alt="TailwindCSS" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/light-prettier-svgrepo-com.svg" alt="Prettier" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/eslint2-svgrepo-com.svg" alt="ESLint" width="50" height="50"/>
+    </td>
+    <td align="center">
+      <img src="diagrams/docker-svgrepo-com.svg" alt="Docker" width="50" height="50"/>
+    </td>
+  </tr>
+</table>
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -184,9 +220,8 @@ Project Link: [https://github.com/Prasenjit-3433/Rankr](https://github.com/Prase
 <!-- ACKNOWLEDGMENTS -->
 ## ✌️ Acknowledgments
 
-* [Fontawesome](https://fontawesome.com/)
-* [Confett.js](https://www.cssscript.com/confetti-falling-animation/)
-* [Heropatterns - SVG Background](https://heropatterns.com/)
+* [Jacob Goodwin](https://www.linkedin.com/in/jacobgoodwin1/)
+* [JacoboCode](https://www.youtube.com/@jacobocode5654)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
