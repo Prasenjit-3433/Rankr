@@ -21,7 +21,7 @@ export const Results: React.FC = () => {
               <p className="text-center text-xl">
                 <span className="text-orange-600">{rankingCount}</span> of{' '}
                 <span className="text-purple-600">{participantCount}</span>{' '}
-                participants have voted
+                participants have voted.
               </p>
             )}
           </div>
@@ -46,7 +46,7 @@ export const Results: React.FC = () => {
                 , to finalize the poll.
               </div>
             )}
-            {poll?.results.length && (
+            {Boolean(poll?.results.length) && (
               <button
                 className="box btn-purple my-2"
                 onClick={() => setIsLeavePollOpen(true)}
@@ -60,7 +60,7 @@ export const Results: React.FC = () => {
 
       {isAdmin && (
         <ConfirmationDialog 
-        message="Are you close the poll and calculate the results"
+        message="Are you sure to close the poll and calculate the results"
         showDialog={isConfirmationOpen}
         onCancel={() => setIsConfirmationOpen(false)}
         onConfirm={() => {
@@ -71,7 +71,7 @@ export const Results: React.FC = () => {
       )}
       {isLeavePollOpen && (
         <ConfirmationDialog 
-        message="You'll be lose all results. Are you sure?"
+        message="You'll lose all results. Are you sure?"
         showDialog={isLeavePollOpen}
         onCancel={() => setIsLeavePollOpen(false)}
         onConfirm={() => actions.startOver()}
